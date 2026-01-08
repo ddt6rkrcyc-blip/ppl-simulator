@@ -15,7 +15,7 @@ body{
 }
 h1{
     text-align:center;
-    font-size:40px;
+    font-size:38px;
 }
 .main-btn{
     display:block;
@@ -29,19 +29,19 @@ h1{
 }
 .menu{
     display:none;
-    width:320px;
+    width:300px;
     margin-top:30px;
 }
 .menu button{
     width:100%;
-    margin-bottom:8px;
+    margin-bottom:10px;
     padding:10px;
     font-size:16px;
 }
 .exam{
     display:none;
-    gap:30px;
     margin-top:30px;
+    gap:30px;
 }
 .question{
     width:65%;
@@ -52,7 +52,7 @@ h1{
 }
 .optic{
     width:35%;
-    border-left:2px solid #aaa;
+    border-left:2px solid #999;
     padding-left:15px;
 }
 .optic-row{
@@ -75,10 +75,6 @@ h1{
     background:#2ecc71;
     color:white;
 }
-.timer{
-    font-size:18px;
-    margin-bottom:15px;
-}
 button{
     cursor:pointer;
 }
@@ -98,14 +94,59 @@ button{
 
 <div class="exam" id="exam">
 
-<!-- SOL TARAF -->
+<!-- SOL -->
 <div class="question">
-<div class="timer">Time: 10:00</div>
-
 <p><strong>1)</strong> What is the condition of not having a problem focusing on distant and close objects and not having visual impairment?</p>
 
 <div class="options">
 <p>A) Myopia</p>
 <p>B) Seeing white</p>
 <p>C) Emmetropia</p>
-<p>D) Hypermet
+<p>D) Hypermetropia</p>
+</div>
+
+<button onclick="finish()">FINISH</button>
+</div>
+
+<!-- SAĞ OPTİK -->
+<div class="optic">
+<div class="optic-row">
+<strong>1</strong>
+<div class="circle" onclick="select(this,'A')">A</div>
+<div class="circle" onclick="select(this,'B')">B</div>
+<div class="circle" onclick="select(this,'C')">C</div>
+<div class="circle" onclick="select(this,'D')">D</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<script>
+let selected = null;
+const correct = "C";
+
+function showMenu(){
+ document.getElementById("menu").style.display="block";
+}
+
+function startExam(){
+ document.getElementById("menu").style.display="none";
+ document.getElementById("exam").style.display="flex";
+}
+
+function select(el,choice){
+ selected = choice;
+ document.querySelectorAll(".circle").forEach(c=>c.classList.remove("selected"));
+ el.classList.add("selected");
+}
+
+function finish(){
+ let score = (selected === correct) ? 100 : 0;
+ alert("Score: "+score+"/100\n"+(score>=75 ? "BAŞARILI" : "BAŞARISIZ"));
+ location.reload();
+}
+</script>
+
+</body>
+</html>
