@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PPL Exam Simulator</title>
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#cfe9ff,#e8f4ff);
+}
+.lines{
+    position:fixed;
+    width:200%;
+    height:200%;
+    background-image:repeating-linear-gradient(
+        135deg,
+        rgba(255,255,255,0.3),
+        rgba(255,255,255,0.3) 1px,
+        transparent 1px,
+        transparent 20px
+    );
+    top:-50%;
+    left:-50%;
+    z-index:0;
+}
+.container{
+    position:relative;
+    z-index:1;
+    padding:30px;
+}
+h1{
+    text-align:center;
+    font-size:48px;
+}
+.main-btn{
+    display:block;
+    margin:20px auto;
+    padding:20px 60px;
+    font-size:28px;
+    background:#2ecc71;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+.menu{
+    display:none;
+    width:320px;
+}
+.menu button{
+    width:100%;
+    margin-bottom:8px;
+    padding:10px;
+    font-size:16px;
+}
+.exam{
+    display:none;
+    gap:20px;
+}
+.question{
+    width:65%;
+}
+.optic{
+    width:35%;
+    border-left:2px solid #ccc;
+    padding-left:15px;
+}
+.optic button{
+    display:block;
+    width:100%;
+    margin-bottom:6px;
+    padding:6px;
+}
+.timer{
+    font-size:18px;
+    margin-bottom:10px;
+}
+.next-btn, .finish-btn{
+    margin-top:15px;
+    padding:10px 30px;
+    font-size:18px;
+}
+</style>
+</head>
+<body>
+<div class="lines"></div>
+<div class="container">
+<h1>KEREM UNCU</h1>
+<button class="main-btn" onclick="showMenu()">BAŞLA</button>
+
+<div class="menu" id="menu">
+<button onclick="startExam()">Human Performance</button>
+<button onclick="startExam()">Meteorology</button>
+<button onclick="startExam()">AGK</button>
+<button onclick="startExam()">POF</button>
+<button onclick="startExam()">Air Law</button>
+<button onclick="startExam()">Flight Performance</button>
+<button onclick="startExam()">OPS</button>
+<button onclick="startExam()">Communication</button>
+<button onclick="startExam()">Navigation</button>
+</div>
+
+<div class="exam" id="exam">
+<div class="question">
+<div class="timer" id="timer">Time: 10:00</div>
+<p id="qtext"></p>
+<button class="next-btn" onclick="nextQuestion()">NEXT</button>
+<button class="finish-btn" onclick="finish()">FINISH</button>
+</div>
+<div class="optic" id="optic"></div>
+</div>
+</div>
+
+<script>
+let time = 600;
+let current = 0;
+let score = 0;
+
+const questions = [
+{
+ text:"What is the condition of not having a problem focusing on distant and close objects and not having visual impairment?",
+ options:["A","B","C","D"],
+ answer:2
+}
+];
+
+function showMenu(){
+ document.getElementById("menu").style.display="block";
+}
+
+function startExam(){
+ document.getElementById("menu").style.display="none";
+ document.getElementById("exam").style.display="flex";
+ loadQuestion();
+ startTimer();
+}
+
+function loadQuestion(){
+ document.getElementById("qtext").innerText = questions[current].text;
+ const optic = document.getElementById("optic");
+ optic.innerHTML="";
+ ["A","B","C","D"].forEach((l,i)=>{
+   const b=document.createElement("button");
+   b.innerText=(current+1)+" - "+l;
+   b.onclick=()=>select(i);
+   optic.appendChild(b);
+ });
+}
+
+function select(i){
+ if(i===questions[current].answer){
+   score += 100;
+ }
+}
+
+function nextQuestion(){
+ if(current < questions.length-1){
+   current++;
+   loadQuestion();
+ }
+}
+
+function startTimer(){
+ setInterval(()=>{
+   time--;
+   let m=Math.floor(time/60);
+   let s=time%60;
+   document.getElementById("timer").innerText="Time: "+m+":"+(s<10?"0":"")+s;
+   if(time<=0) finish();
+ },1000);
+}
+
+function finish(){
+ alert("Score: "+score+"/100\n"+(score>=75?"BAŞARILI":"BAŞARISIZ"));
+ location.reload();
+}
+</script>
+</body>
+</html>
